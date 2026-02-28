@@ -48,28 +48,54 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-100 p-4">
-      <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
-        <h1 className="text-2xl font-bold text-slate-800 mb-6 text-center">Crear Cuenta Fiscal</h1>
+      <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg">
+        <h1 className="text-2xl font-bold text-slate-900 mb-6 text-center border-b pb-4">
+          Registro de Usuario Fiscal
+        </h1>
         
-        {error && <p className="bg-red-100 text-red-600 p-3 rounded mb-4 text-sm">{error}</p>}
+        {error && <p className="bg-red-50 text-red-700 p-3 rounded mb-4 text-sm border border-red-200">{error}</p>}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <input name="primer_nombre" placeholder="Primer Nombre" required className="w-full p-2 border rounded" onChange={handleChange} />
-          <div className="grid grid-cols-2 gap-4">
-            <input name="apellido_paterno" placeholder="Ap. Paterno" required className="w-full p-2 border rounded" onChange={handleChange} />
-            <input name="apellido_materno" placeholder="Ap. Materno" className="w-full p-2 border rounded" onChange={handleChange} />
+          <div>
+            <label className={labelStyle}>Primer Nombre</label>
+            <input name="primer_nombre" required className={inputStyle} onChange={handleChange} />
           </div>
-          <input name="rfc" placeholder="RFC (13 caracteres)" maxLength={13} required className="w-full p-2 border rounded font-mono" onChange={handleChange} />
-          <input name="email" type="email" placeholder="Correo Electrónico" required className="w-full p-2 border rounded" onChange={handleChange} />
-          <input name="password" type="password" placeholder="Contraseña" required className="w-full p-2 border rounded" onChange={handleChange} />
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className={labelStyle}>Apellido Paterno</label>
+              <input name="apellido_paterno" required className={inputStyle} onChange={handleChange} />
+            </div>
+            <div>
+              <label className={labelStyle}>Apellido Materno</label>
+              <input name="apellido_materno" className={inputStyle} onChange={handleChange} />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className={labelStyle}>RFC (SAT)</label>
+              <input name="rfc" maxLength={13} required className={`${inputStyle} font-mono`} placeholder="ABCD123456XYZ" onChange={handleChange} />
+            </div>
+            <div>
+              <label className={labelStyle}>Correo Institucional / Personal</label>
+              <input name="email" type="email" required className={inputStyle} onChange={handleChange} />
+            </div>
+          </div>
+
+          <div>
+            <label className={labelStyle}>Contraseña de Acceso</label>
+            <input name="password" type="password" required className={inputStyle} onChange={handleChange} />
+            <p className="text-xs text-slate-500 mt-1">Usa al menos 8 caracteres para mayor seguridad.</p>
+          </div>
           
-          <button type="submit" className="w-full bg-indigo-600 text-white p-3 rounded-lg font-bold hover:bg-indigo-700 transition">
-            Registrarme
+          <button type="submit" className="w-full bg-slate-900 text-white p-3 rounded-lg font-bold hover:bg-black transition-colors mt-4">
+            Crear Cuenta de Freelancer
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-slate-600">
-          ¿Ya tienes cuenta? <Link href="/" className="text-indigo-600 hover:underline">Inicia sesión aquí</Link>
+        <p className="mt-6 text-center text-sm text-slate-700">
+          ¿Ya tienes cuenta? <Link href="/" className="font-bold text-indigo-700 hover:underline">Inicia sesión aquí</Link>
         </p>
       </div>
     </div>
