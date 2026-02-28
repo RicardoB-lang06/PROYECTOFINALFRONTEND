@@ -45,6 +45,8 @@ export default function RegisterPage() {
       setError('Error de conexión con el servidor de Render');
     }
   };
+  const labelStyle = "block text-sm font-semibold text-slate-900 mb-1";
+  const inputStyle = "w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500 outline-none text-slate-800";
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-100 p-4">
