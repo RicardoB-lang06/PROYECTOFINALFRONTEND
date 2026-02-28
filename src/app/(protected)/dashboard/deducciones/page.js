@@ -18,7 +18,7 @@ export default function DeduccionesPage() {
     categoria: 'Gastos Operativos',
     monto_original: '',
     moneda: 'MXN',
-    fecha_gasto: {new Date(i.fecha_gasto).toLocaleDateString('es-MX', { timeZone: 'UTC' })}
+    fecha_gasto: new Date().toISOString().split('T')[0]
   };
 
   const [formData, setFormData] = useState(initialFormState);
@@ -134,7 +134,7 @@ export default function DeduccionesPage() {
                 <td className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-tighter">{d.rfc_emisor}</td>
                 <td className="px-8 py-6 text-[10px] font-black text-indigo-600 bg-indigo-50 px-2 py-1 rounded-md uppercase inline-block mt-5 ml-8">{d.categoria}</td>
                 <td className="px-8 py-6 text-red-600 font-black">${Number(d.monto_mxn).toLocaleString('es-MX', { minimumFractionDigits: 2 })}</td>
-                <td className="px-8 py-6 text-slate-400 font-medium">{new Date(d.fecha_gasto).toLocaleDateString('es-MX')}</td>
+                <td className="px-8 py-6 text-slate-400 font-medium">{new Date(d.fecha_gasto).toLocaleDateString('es-MX', { timeZone: 'UTC' })}</td>
                 <td className="px-8 py-6 text-center">
                   <div className="flex justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button onClick={() => handleEditClick(d)} className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg">✏️</button>
