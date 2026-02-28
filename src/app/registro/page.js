@@ -28,6 +28,7 @@ export default function RegisterPage() {
     e.preventDefault();
     setError('');
     setLoading(true);
+    console.log("al backend:", formData);
 
     if (formData.rfc.length < 12) {
       setLoading(false);
@@ -109,7 +110,7 @@ export default function RegisterPage() {
           <button 
             type="submit" 
             disabled={loading}
-            className={`w-full ${loading ? 'bg-slate-400' : 'bg-slate-900 hover:bg-black'} text-white p-3 rounded-lg font-bold transition-colors mt-4 shadow-md`}
+            className={`w-full ${loading ? 'cursor-not-allowed bg-slate-400' : 'cursor-pointer bg-slate-900 hover:bg-black'} text-white p-3 rounded-lg font-bold transition-colors mt-4 shadow-md`}
           >
             {loading ? 'Procesando registro...' : 'Crear Cuenta'}
           </button>
