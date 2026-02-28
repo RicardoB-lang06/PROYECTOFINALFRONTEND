@@ -10,7 +10,7 @@ export default function RegisterPage() {
     apellido_materno: '',
     rfc: '',
     email: '',
-    password: ''
+    password_hash: ''
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -97,7 +97,7 @@ export default function RegisterPage() {
 
           <div>
             <label className={labelStyle}>Contraseña de Acceso</label>
-            <input name="password" type="password" value={formData.password} required className={inputStyle} onChange={handleChange} />
+            <input name="password_hash" type="password" value={formData.password_hash} required className={inputStyle} onChange={handleChange} />
           </div>
           
           <button 
