@@ -143,7 +143,7 @@ export default function IngresosPage() {
                     ${Number(i.monto_mxn).toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                   </td>
                   <td className="px-8 py-6 text-slate-400 font-medium">
-                    {new Date(i.fecha_recepcion).toLocaleDateString('es-MX')}
+                    {new Date(i.fecha_recepcion).toLocaleDateString('es-MX', { timeZone: 'UTC' })}
                   </td>
                   <td className="px-8 py-6 text-center">
                     <div className="flex justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
