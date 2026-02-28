@@ -30,7 +30,7 @@ export default function IngresosPage() {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ingresos/paginados?page=${page}&limit=5`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ingresos/paginados?page=${page}&limit=2`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       
