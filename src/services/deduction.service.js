@@ -38,22 +38,23 @@ update: async (id, data) => {
   },
   delete: async (id) => {
     const token = localStorage.getItem('token');
-    
-    if (!id) throw new Error("No se proporcionó un ID válido para borrar.");
-
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/deducciones/${id}`, {
       method: 'DELETE',
-      headers: { 
-        'Authorization': `Bearer ${token}` 
+      headers: {
+        'Authorization': `Bearer ${token}`
       }
     });
 
-    if (!res.ok) {
-      const errorBody = await res.json().catch(() => ({}));
-      throw new Error(errorBody.error || `Error del servidor: ${res.status}`);
+    if (res.status === 204) {
+      return true; 
     }
 
-    return await res.json().catch(() => ({ success: true }));
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.error || 'Error al eliminar deducción');
+    }
+
+    return await res.json();
   }
 
 };
