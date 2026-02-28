@@ -12,6 +12,9 @@ export default function IngresosPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
 
+  const [paginaActual, setPaginaActual] = useState(1);
+  const [metadata, setMetadata] = useState(null);
+
   const initialFormState = {
     fuente: '',
     monto_original: '',
@@ -21,13 +24,22 @@ export default function IngresosPage() {
 
   const [formData, setFormData] = useState(initialFormState);
 
-  useEffect(() => { loadIngresos(); }, []);
+  useEffect(() => { loadIngresos(paginaActual); }, [paginaActual]);
 
-  const loadIngresos = async () => {
+  const loadIngresos = async (page = 1) => {
     setLoading(true);
     try {
-      const res = await incomeService.getAll();
-      setIngresos(res.data || []);
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ingresos/paginados?page=${page}&limit=5`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      
+      const responseData = await res.json();
+      
+      if (responseData.ok) {
+        setIngresos(responseData.data || []);
+        setMetadata(responseData.metadata);
+      }
     } catch (err) {
       console.error("Error al cargar ingresos:", err);
     } finally {
@@ -51,7 +63,7 @@ export default function IngresosPage() {
     if (confirm("¿Estás seguro de eliminar este ingreso? El balance de tu dashboard cambiará.")) {
       try {
         await incomeService.delete(id);
-        await loadIngresos();
+        await loadIngresos(paginaActual);
       } catch (err) {
         alert("Error al eliminar el registro.");
       }
@@ -68,12 +80,14 @@ export default function IngresosPage() {
     try {
       if (isEditing) {
         await incomeService.update(selectedId, payload);
+        await loadIngresos(paginaActual);
       } else {
         await incomeService.create(payload);
+        setPaginaActual(1);
+        if (paginaActual === 1) await loadIngresos(1);
       }
       setIsModalOpen(false);
       resetForm();
-      await loadIngresos();
     } catch (err) { 
       alert("Error al procesar: " + err.message); 
     } finally {
@@ -117,7 +131,7 @@ export default function IngresosPage() {
             {loading ? (
               <tr><td colSpan="5" className="px-8 py-10 text-center font-bold text-slate-400">Cargando ingresos...</td></tr>
             ) : ingresos.length === 0 ? (
-              <tr><td colSpan="5" className="px-8 py-20 text-center font-bold text-slate-400 italic">No hay ingresos registrados.</td></tr>
+              <tr><td colSpan="5" className="px-8 py-20 text-center font-bold text-slate-400 italic">No hay ingresos registrados en esta página.</td></tr>
             ) : (
               ingresos.map((i) => (
                 <tr key={i.id} className="hover:bg-slate-50/30 transition-colors group">
@@ -142,6 +156,31 @@ export default function IngresosPage() {
             )}
           </tbody>
         </table>
+
+        {!loading && metadata && metadata.totalPages > 1 && (
+          <div className="bg-slate-50 border-t border-slate-100 px-8 py-4 flex items-center justify-between">
+            <p className="text-sm font-medium text-slate-500">
+              Página <span className="font-bold text-indigo-600">{metadata.currentPage}</span> de <span className="font-bold text-slate-800">{metadata.totalPages}</span> 
+              <span className="ml-2 text-xs opacity-60">({metadata.totalRegistros} pagos totales)</span>
+            </p>
+            <div className="flex gap-2">
+              <button 
+                onClick={() => setPaginaActual(prev => prev - 1)}
+                disabled={metadata.currentPage === 1}
+                className="px-4 py-2 text-sm font-bold bg-white border border-slate-200 text-slate-600 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-100 transition-all"
+              >
+                Anterior
+              </button>
+              <button 
+                onClick={() => setPaginaActual(prev => prev + 1)}
+                disabled={metadata.currentPage === metadata.totalPages}
+                className="px-4 py-2 text-sm font-bold bg-indigo-600 text-white rounded-lg disabled:opacity-40 disabled:cursor-not-allowed hover:bg-indigo-700 transition-all shadow-sm"
+              >
+                Siguiente
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={isEditing ? "Editar Pago" : "Registrar Pago"}>
