@@ -18,7 +18,7 @@ export default function DeduccionesPage() {
     categoria: 'Gastos Operativos',
     monto_original: '',
     moneda: 'MXN',
-    fecha_gasto: new Date().toISOString().split('T')[0]
+    fecha_gasto: {new Date(i.fecha_gasto).toLocaleDateString('es-MX', { timeZone: 'UTC' })}
   };
 
   const [formData, setFormData] = useState(initialFormState);
